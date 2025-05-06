@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Markdown Navigator</title>
+</head>
+<body>
+  <h1>Archivos Markdown</h1>
+  <ul id="file-list"></ul>
+
+  <script>
+    fetch('/api/files')
+      .then(response => response.json())
+      .then(data => {
+        const list = document.getElementById('file-list');
+        data.files.forEach(file => {
+          const li = document.createElement('li');
+          li.textContent = file;
+          list.appendChild(li);
+        });
+      })
+      .catch(error => console.error('Error:', error));
+  </script>
+</body>
+</html>
