@@ -9,29 +9,66 @@
 <body>
   <h1>Archivos Markdown</h1>
   <ul id="file-list"></ul>
+
+  <h2>Vista Previa</h2>
   <div id="preview"></div>
 
+  <h2>Crear archivos Markdown</h2>
+  <input type="text" id="file-name" placeholder="Nombre del archivo markdown"/>
+  <textarea id="new-file-content" rows="8" placeholder="Contenido Markdown..."></textarea>
+  <button onclick="crearMarkdown()">Guardar Markdown</button>
   <script>
     const list = document.getElementById('file-list');
     const preview = document.getElementById('preview');
 
-    fetch('/api/files')
-      .then(res => res.json())
-      .then(data => {
-        data.files.forEach(file => {
-          const li = document.createElement('li');
-          li.textContent = file;
-          li.style.cursor = 'pointer';
-          li.addEventListener('click', () => {
-            fetch(`/api/file/${file}`)
-              .then(res => res.json())
-              .then(data => {
-                preview.innerHTML = data.content;
-              });
+    function listarArchivos(){
+      list.innerHTML = ``;
+      fetch('/api/files')
+        .then(res => res.json())
+        .then(data => {
+          data.files.forEach(file => {
+            const li = document.createElement('li');
+            li.textContent = file;
+            li.style.cursor = 'pointer';
+            li.addEventListener('click', () => {
+              fetch(`/api/file/${file}`)
+                .then(res => res.json())
+                .then(data => {
+                  preview.innerHTML = data.content;
+                });
+            });
+            list.appendChild(li);
           });
-          list.appendChild(li);
         });
-      });
+    }
+
+    function crearMarkdown() {
+      const fileName = document.getElementById('file-name').value.trim();
+      const content = document.getElementById("new-file-content").value;
+      if(!fileName.endsWith('.md')){
+        alert('EL archivo necesita una extension.md');
+        return;
+      }
+      fetch('/api/file',{
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ name: fileName, content})
+      })
+        .then(res => res.json())
+        .then(data => {
+          if(data.success){
+            alert('Archivo guardado');
+            listarArchivos();
+            document.getElementById('file-name').value = '';
+            document.getElementById('new-file-content').value = '';
+          }else{
+            alert('Error, no se guardo el archivo');
+          }
+        })
+    }
+    listarArchivos();
   </script>
 
 </body>
