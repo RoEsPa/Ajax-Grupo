@@ -132,6 +132,57 @@
     button:hover {
       background-color: #2980b9;
     }
+
+     #preview h1, #preview h2, #preview h3 {
+      color: var(--primary);
+      margin: 20px 0 10px;
+    }
+
+    #preview p {
+      margin: 10px 0;
+    }
+
+    #preview code {
+      background-color: #444;
+      padding: 2px 5px;
+      border-radius: 3px;
+      font-family: monospace;
+    }
+
+    #preview pre {
+      background-color: #444;
+      padding: 15px;
+      border-radius: 6px;
+      overflow-x: auto;
+      margin: 15px 0;
+    }
+
+    #preview blockquote {
+      border-left: 4px solid var(--primary);
+      padding-left: 15px;
+      margin: 15px 0;
+      color: var(--light-gray);
+    }
+
+    .alert {
+      padding: 15px;
+      border-radius: 6px;
+      margin: 20px 0;
+      display: none;
+    }
+
+    .alert.success {
+      background-color: rgba(46, 204, 113, 0.2);
+      border: 1px solid var(--success);
+      display: block;
+    }
+
+    .alert.error {
+      background-color: rgba(231, 76, 60, 0.2);
+      border: 1px solid #e74c3c;
+      display: block;
+    }
+  </style>
 </head>
 
 <body>
