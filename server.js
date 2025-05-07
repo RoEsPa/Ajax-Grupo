@@ -35,6 +35,23 @@ app.get('/api/file/:name', (req, res) => {
     });
 });
 
+app.post('/api/file', (req, res) => {
+    const { name, content } = req.body;
+
+    if (!name || !content) {
+        return res.status(400).json({ success: false, error: 'Faltan datos' });
+    }
+
+    const filePath = path.join(__dirname, 'markdowns', name);
+
+    fs.writeFile(filePath, content, 'utf8', (err) => {
+        if (err) {
+            return res.status(500).json({ success: false, error: 'No se pudo guardar el archivo' });
+        }
+        res.json({ success: true });
+    });
+});
+
 app.listen(PORT, () => {
     console.log(`Servidor corriendo en http://localhost:${PORT}`);
 });
